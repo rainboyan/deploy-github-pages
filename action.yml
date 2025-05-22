@@ -1,0 +1,15 @@
+name: 'Deploy GitHub Pages site'
+description: 'A GitHub Action to deploy an artifact as a GitHub Pages site'
+author: 'Michael Yan'
+branding:
+  icon: 'award'
+  color: 'orange'
+runs:
+  using: 'composite'
+  steps:
+    - name: Make the script files executable
+      run: chmod +x ${{ github.action_path }}/main.sh
+      shell: bash
+    - name: Execute the main script
+      run: ${{ github.action_path }}/main.sh
+      shell: bash
