@@ -1,5 +1,5 @@
-name: 'Deploy GitHub Pages site'
-description: 'A GitHub Action to deploy an artifact as a GitHub Pages site'
+name: 'Deploy multi-version documentation to GitHub Pages'
+description: 'A GitHub Action to deploy multi-version documentation to GitHub Pages'
 author: 'Michael Yan'
 branding:
   icon: 'award'

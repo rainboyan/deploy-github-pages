@@ -2,7 +2,7 @@
 
 set -e
 
-if [ -z "$GH_TOKEN" ]
+if [ -z "$TOKEN" ]
 then
   echo "You must provide the action with a GitHub Personal Access Token secret in order to deploy."
   exit 1
@@ -56,7 +56,7 @@ git config --global http.version HTTP/1.1
 git config --global http.postBuffer 157286400
 
 ## Initializes the repository path using the access token.
-REPOSITORY_PATH="https://${GH_TOKEN}@github.com/${TARGET_REPOSITORY}.git" && \
+REPOSITORY_PATH="https://${TOKEN}@github.com/${TARGET_REPOSITORY}.git" && \
 
 # Checks to see if the remote exists prior to deploying.
 # If the branch doesn't exist it gets created here as an orphan.
@@ -71,7 +71,7 @@ then
   touch README.md && \
   git add README.md && \
   git commit -m "Initial ${BRANCH} commit" && \
-  git push "https://$GITHUB_ACTOR:$GH_TOKEN@github.com/$TARGET_REPOSITORY.git" $BRANCH
+  git push "https://$GITHUB_ACTOR:$TOKEN@github.com/$TARGET_REPOSITORY.git" $BRANCH
 else
   ## Clone the target repository
   git clone "$REPOSITORY_PATH" $DOC_FOLDER --branch $BRANCH --single-branch && \
@@ -93,15 +93,14 @@ fi
 # Commits the data to Github.
 if [ -z "$VERSION" ]
 then
-  echo "No Version. Publishing Snapshot of Docs"
+  echo "No Version. Publishing Docs to Root"
   if [ -n "${DOC_SUB_FOLDER}" ]; then
-    mkdir -p snapshot/$DOC_SUB_FOLDER
-    cp -r "../$FOLDER/." ./snapshot/$DOC_SUB_FOLDER/
-    git add snapshot/$DOC_SUB_FOLDER/*
+    mkdir -p $DOC_SUB_FOLDER
+    cp -r "../$FOLDER/." ./$DOC_SUB_FOLDER/
+    git add $DOC_SUB_FOLDER/*
   else
-    mkdir -p snapshot
-    cp -r "../$FOLDER/." ./snapshot/
-    git add snapshot/*
+    cp -r "../$FOLDER/." ./
+    git add *
   fi
 else
     echo "Publishing $VERSION of Docs"
@@ -145,5 +144,5 @@ fi
 
 
 git commit -m "Deploying to ${BRANCH} - $(date +"%T")" --quiet && \
-git push "https://$GITHUB_ACTOR:$GH_TOKEN@github.com/$TARGET_REPOSITORY.git" $BRANCH || true && \
+git push "https://$GITHUB_ACTOR:$TOKEN@github.com/$TARGET_REPOSITORY.git" $BRANCH || true && \
 echo "Deployment successful!"
