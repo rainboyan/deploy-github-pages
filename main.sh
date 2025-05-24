@@ -118,8 +118,7 @@ else
       fi
     fi
 
-    majorVersion=${VERSION:0:4}
-    majorVersion="${majorVersion}x"
+    majorVersion="${VERSION%'.'*}.x"
 
     if [ -n "${DOC_SUB_FOLDER}" ]; then
       mkdir -p "$VERSION/$DOC_SUB_FOLDER"
